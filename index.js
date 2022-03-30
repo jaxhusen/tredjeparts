@@ -4,14 +4,15 @@
 const express = require('express');
 //const res = require('express/lib/response');
 const cars = require('./cars.js');
+const users = require('./users.js')
 
 //Generera ett nytt ID för cars-listan
 //get new id from array
-function getId(){
+function getId(list){
     //get last item in array
-    const lastCar = cars.slice(-1)[0]
+    const lastItem = list.slice(-1)[0];
 
-    let id = (lastCar?.id);
+    let id = (lastItem?.id);
     id = id ? id + 1 : 1;
 
     return id;
@@ -24,7 +25,7 @@ app.use(express.json())
 
 
 app.get('/', (req, res) => {
-    res.send("Cars hje hej")
+    res.send("Cars")
 })
 
 app.get('/cars', (req, res) => {
@@ -40,7 +41,7 @@ app.get('/cars/:id', (req,res) => {
 
 //Skapa en ny bil
 app.post('/cars', (req, res) => {
-    const id = getId()
+    const id = getId(cars)
 
     const newCar = {
         id,
@@ -56,10 +57,29 @@ app.post('/cars', (req, res) => {
 //Slutför dessa själv
 app.put('/cars/:id', (req,res) => {
     //TODO: update car
+    const id = parseInt(req.params.id)
+
+    const index = cars.findIndex(c => c.id === id)
+
+    cars[index].make = req.body.make
+    cars[index].model = req.body.model
+
+    res.sendStatus(200)
+
+    /*     
+    const car = cars.findIndex(c => c.id === id)
+    car.make = req.body.make
+    car.model = req.body.model
+    res.send(car) 
+    */
 })
 
-app.delete('/cars/:id', (req,res) => {
+app.delete('/cars/:id', (req, res) => {
     //TODO: delete car
+    const id = parseInt(req.params.id)
+    const index = cars.findIndex(c => c.id === id)
+    cars.splice(index, 1)
+    res.sendStatus(200)
 })
 
 //längst ner, starta servern
