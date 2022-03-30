@@ -82,6 +82,15 @@ app.delete('/cars/:id', (req, res) => {
     res.sendStatus(200)
 })
 
+
+
+//--------------
+app.get('/users', (req, res) => {
+    res.send(users)
+})
+//-------------
+
+
 //längst ner, starta servern
 app.listen(8000, () => {
     console.log("http://localhost:8000")
